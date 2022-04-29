@@ -1,0 +1,7 @@
+{
+  "name": "Website2Go",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
