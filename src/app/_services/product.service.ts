@@ -39,7 +39,7 @@ export class ProductService {
 
     saveProduct(product: Product)
     {
-        product.CreatedBy = this.storageService.get('currentUserID');
+        product.CreatedBy = this.storageService.get('currentUserID').toString(); // ToDo
         console.log(this.storageService.get('currentUserID'));
         product.CreatedOn = new Date().toISOString();
         let key = this.productReference.push(product);
