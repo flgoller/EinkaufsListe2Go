@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title style="text-align: center;">{{ shoppingList.Name }}</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="shopping-lists" icon="chevron-back-outline"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+
+    <ion-list *ngFor="let product of Products | async">
+      <ion-item >
+        <ion-label>{{ product.Amount }} x {{ product.Name }}</ion-label>
+        <ion-icon (click)="openProduct(product)" color="primary" name="arrow-up-circle-outline"></ion-icon>
+        <ion-icon (click)="deleteProduct(product)" color="primary" name="trash-outline"></ion-icon>
+      </ion-item>
+  </ion-list>
+ 
+  <ion-item (click)="newProduct()">
+    <ion-icon color="primary" name="add-circle-outline"></ion-icon>
+    Produkt hinzufügen
+  </ion-item>
+</ion-content>

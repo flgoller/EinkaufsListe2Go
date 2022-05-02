@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { StorageService } from './_services/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,20 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  emailCurrentUser: string;
+
+  constructor(private platform: Platform, 
+      private storageService: StorageService) {
+          this.getEmailFromCurrentUser();
+          this.initializeApp();
+  }
+
+  initializeApp() {
+      this.platform.ready().then(() => {});
+  }
+
+  async getEmailFromCurrentUser()
+  {
+      this.emailCurrentUser = await this.storageService.get('emailCurrentUser');
+  }
 }

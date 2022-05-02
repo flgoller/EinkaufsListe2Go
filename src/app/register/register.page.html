@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title style="text-align: center;">Registrieren</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="login" icon="chevron-back-outline"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  <form [formGroup]="registerForm" (keydown.enter)="register()">
+      <ion-grid fixed>
+          <ion-row>
+              <ion-col size="12">
+                  <ion-item>
+                      <ion-label position="stacked">Benutzername</ion-label>
+                      <ion-input formControlName="displayname" type="text"></ion-input>
+                  </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-item>
+                      <ion-label position="stacked">Email</ion-label>
+                      <ion-input formControlName="email" type="text"></ion-input>
+                  </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-item>
+                      <ion-label position="stacked">Passwort</ion-label>
+                      <ion-input formControlName="password" type="password"></ion-input>
+                  </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-item>
+                      <ion-label position="stacked">
+                          Passwort bestätigen
+                      </ion-label>
+                      <ion-input formControlName="passwordConfirmation" type="password"></ion-input>
+                  </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-button (click)="register()" expand="block" [disabled]="!registerForm.valid">
+                      Registrieren
+                  </ion-button>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
+  </form>
+</ion-content>

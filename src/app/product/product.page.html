@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title style="text-align: center;">Produkt</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="shopping-lists" icon="chevron-back-outline"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding">
+  <form [formGroup]="productForm" (keydown.enter)="save()">
+      <ion-grid fixed>
+          <ion-row>
+              <ion-col size="12">
+                  <ion-item>
+                      <ion-label position="stacked">Artikelname</ion-label>
+                      <ion-input formControlName="name" [(ngModel)]="product.Name" type="text"></ion-input>
+                  </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-item>
+                      <ion-label position="stacked">Kategorie</ion-label>
+                      <ion-input formControlName="category" [(ngModel)]="product.Category" type="text"></ion-input>
+                  </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-item>
+                      <ion-label position="stacked">Menge</ion-label>
+                      <ion-input formControlName="amount" [(ngModel)]="product.Amount" type="number"></ion-input>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label position="stacked">Priorität</ion-label>
+                    <ion-input formControlName="priority" [(ngModel)]="product.Priority" type="text"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-item>
+                      <ion-label position="stacked">
+                          Notiz
+                      </ion-label>
+                      <ion-input formControlName="notes" [(ngModel)]="product.Notes" type="text"></ion-input>
+                  </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                  <ion-button (click)="save()" expand="block" [disabled]="!productForm.valid">
+                      Speichern
+                  </ion-button>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
+  </form>
+</ion-content>
