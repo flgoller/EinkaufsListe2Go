@@ -22,14 +22,16 @@
   <ion-list *ngFor="let list of shoppingLists | async | filter:searchTerm">
       <ion-item (click)="openShoppingList(list)">
         <ion-label>{{ list.Name }}</ion-label>
-        <ion-icon (click)="openShoppingList(list)" color="primary" name="arrow-up-circle-outline"></ion-icon>
         <ion-icon (click)="deleteShoppingList(list)" color="primary" name="trash-outline"></ion-icon>
       </ion-item>
   </ion-list>
-  <ion-item (click)="shoppingListprompt()">
-    <ion-icon color="primary" name="add-circle-outline"></ion-icon>
-    Einkaufsliste hinzufügen
-  </ion-item>
+
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed">
+    <ion-fab-button (click)="shoppingListprompt()" color="primary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
 </ion-content>
 
 

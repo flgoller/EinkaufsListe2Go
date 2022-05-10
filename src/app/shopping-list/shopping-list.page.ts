@@ -22,6 +22,7 @@ export class ShoppingListPage implements OnInit {
   shoppingList: ShoppingList;
   Products: Observable<Product[]>;
   productRef: AngularFireList<Product>;
+  deleteProcess: boolean;
   constructor(
     private shoppingListService: ShoppingListService,
     private productService: ProductService,
@@ -33,18 +34,25 @@ export class ShoppingListPage implements OnInit {
       this.Products = this.productRef.valueChanges();
 
       this.productService.setProductReference(this.productRef);
+      this.deleteProcess = false;
   }
   ngOnInit() {
   }
 
   openProduct(product: Product)
   {
+    if(this.deleteProcess == false)
+    {
       this.productService.setProduct(product);
       this.router.navigateByUrl('/product');
+    }
+    this.deleteProcess = false;
+      
   }
 
   deleteProduct(product: Product)
   {
+    this.deleteProcess = true;
     this.productService.deleteProduct(product);
   }
 

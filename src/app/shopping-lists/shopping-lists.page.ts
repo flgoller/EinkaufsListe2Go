@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ShoppingListService } from '../_services/shoppingList.service';
 import { ShoppingList } from '../_types/shoppingLists';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController  } from '@ionic/angular';
 import {
     AngularFireList,
     AngularFireDatabase,
@@ -26,7 +26,8 @@ export class ShoppingListsPage implements OnInit {
       private shoppingListService: ShoppingListService,
       afDb: AngularFireDatabase,
       private menuCtrl: MenuController,
-      private alertCtrl: AlertController
+      private alertCtrl: AlertController,
+      private toast: ToastController
   ) {
       this.shoppingListsRef = afDb.list('/ShoppingList');
       this.shoppingLists = this.shoppingListsRef.valueChanges();
@@ -75,8 +76,23 @@ export class ShoppingListsPage implements OnInit {
         {
           text: 'Speichern',
           handler: data => {
-            let newShoppingList = new ShoppingList(data.Name);
-            this.shoppingListService.saveShoppingList(newShoppingList);
+            if(data.Name.length > 2)
+            {
+              let newShoppingList = new ShoppingList(data.Name);
+              this.shoppingListService.saveShoppingList(newShoppingList);
+            }
+            else
+            {
+              this.toast
+                .create({
+                    message: `Der Name muss mindestens 3 Zeichen lang sein.`,
+                    color: 'warning',
+                    duration: 5000,
+                })
+                .then((toast) => toast.present());
+            this.router.navigateByUrl('/login');
+            }
+           
         }
       }
       ]
