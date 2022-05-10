@@ -1,9 +1,14 @@
 import { Product } from "../_types/product";
 
 export class ShoppingList {
-    ID: number;
+    constructor(name: string)
+    {
+        this.Name = name;
+    }
+    
+    ID: string;
     ChangedOn: string;
-    CreatedBy: number;
+    CreatedBy: string;
     CreatedOn: string;
     Name: string;
     Products: Product;

@@ -10,7 +10,7 @@
 <ion-content class="ion-no-padding">
 
     <ion-list *ngFor="let product of Products | async">
-      <ion-item >
+      <ion-item>
         <ion-label>{{ product.Amount }} x {{ product.Name }}</ion-label>
         <ion-icon (click)="openProduct(product)" color="primary" name="arrow-up-circle-outline"></ion-icon>
         <ion-icon (click)="deleteProduct(product)" color="primary" name="trash-outline"></ion-icon>
