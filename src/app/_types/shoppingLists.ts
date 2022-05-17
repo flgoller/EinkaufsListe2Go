@@ -12,4 +12,5 @@ export class ShoppingList {
     CreatedOn: string;
     Name: string;
     Products: Product;
+    UserAuthorization: string;
 }

@@ -38,10 +38,9 @@ export class ProductService {
         this.productReference.update(product.ID.toString(), product);
     }
 
-    saveProduct(product: Product)
+    async saveProduct(product: Product)
     {
-        product.CreatedBy = this.storageService.get('currentUserID').toString(); // ToDo
-        console.log(this.storageService.get('currentUserID'));
+        product.CreatedBy = await this.storageService.get('currentUserID');
         product.CreatedOn = new Date().toISOString();
         let key = this.productReference.push(product);
         product.ID = key.key;

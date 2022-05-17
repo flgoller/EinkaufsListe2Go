@@ -9,6 +9,10 @@ import {
     AngularFireDatabase,
 } from '@angular/fire/compat/database';
 import { MenuController } from '@ionic/angular';
+import { userAuthorizationService } from '../_services/userAuthorization.service';
+import { UserAuthorization } from '../_types/userAuthorization';
+import { StorageService } from '../_services/storage.service';
+import { async } from '@firebase/util';
 
 @Component({
   selector: 'app-shopping-lists',
@@ -18,41 +22,71 @@ import { MenuController } from '@ionic/angular';
 
 export class ShoppingListsPage implements OnInit {
   shoppingLists: Observable<ShoppingList[]>;
+  shoppingListsWithPermission: Observable<ShoppingList[]>;
   shoppingListsRef: AngularFireList<ShoppingList>;
+  userAuthorization: Observable<UserAuthorization[]>;
+  userAuthorizationRef: AngularFireList<UserAuthorization>;
   searchTerm: string;
-  deleteProcess: boolean;
+  notOpenList: boolean;
   constructor(
       private router: Router,
       private shoppingListService: ShoppingListService,
+      private userAuthService: userAuthorizationService,
       afDb: AngularFireDatabase,
       private menuCtrl: MenuController,
       private alertCtrl: AlertController,
-      private toast: ToastController
+      private toast: ToastController,
   ) {
       this.shoppingListsRef = afDb.list('/ShoppingList');
       this.shoppingLists = this.shoppingListsRef.valueChanges();
       this.shoppingListService.setShoppingListReference(this.shoppingListsRef);
-      this.deleteProcess = false;
-  }
+      this.notOpenList = false;
+
+      this.userAuthorizationRef = afDb.list('/UserAuthorization');
+      this.userAuthService.setUserAuthorizationtReference(this.userAuthorizationRef);
+  
+      this.shoppingListsWithPermission = this.shoppingLists.forEach(async (lists) => { 
+        let index = 0;
+        lists.forEach(async (list) => { 
+          let hasUserPerrmission = await this.userAuthService.hasUserPerrmission(list);
+            if(!hasUserPerrmission)
+            {
+              console.log(lists);
+              lists.splice(index, 1);
+              console.log(lists);
+            }
+
+            index++;
+        });
+     
+    });    
+      
+}
 
   openShoppingList(list: ShoppingList)
   {
-    if(this.deleteProcess == false)
+    if(this.notOpenList == false)
     {
       this.shoppingListService.setShoppingList(list);
       this.router.navigateByUrl('/shopping-list');
     }
 
-    this.deleteProcess = false;
+    this.notOpenList = false;
   }
 
   ionViewWillEnter() {
       this.menuCtrl.enable(true);
   }
 
+  addUser(shoppingList: ShoppingList)
+  {
+    this.notOpenList = true;
+    this.shoppingListService.deleteShoppingList(shoppingList);
+  }
+
   deleteShoppingList(shoppingList: ShoppingList)
   {
-    this.deleteProcess = true;
+    this.notOpenList = true;
     this.shoppingListService.deleteShoppingList(shoppingList);
   }
 

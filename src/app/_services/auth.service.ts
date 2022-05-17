@@ -29,6 +29,7 @@ export class AuthService {
                 this.storageService.set('emailCurrentUser', result.user.email);
                 this.storageService.set('currentUser', result.user.displayName);
                 this.storageService.set('currentUserID', result.user.uid);
+                console.log(result.user.uid);
 
                 this.toast.create({
                     message: `Willkommen ${result.user.displayName}`,

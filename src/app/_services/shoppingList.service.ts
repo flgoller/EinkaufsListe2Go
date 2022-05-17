@@ -38,10 +38,9 @@ export class ShoppingListService {
         this.shoppingListReference.update(shoppingList.ID.toString(), shoppingList);
     }
 
-    saveShoppingList(shoppingList: ShoppingList)
+    async saveShoppingList(shoppingList: ShoppingList)
     {
-        shoppingList.CreatedBy = this.storageService.get('currentUserID').toString(); // ToDo
-        console.log(this.storageService.get('currentUserID'));
+        shoppingList.CreatedBy = await this.storageService.get('currentUserID').toString(); // ToDo
         shoppingList.CreatedOn = new Date().toISOString();
         shoppingList.ChangedOn = shoppingList.CreatedOn;
         let key = this.shoppingListReference.push(shoppingList);
