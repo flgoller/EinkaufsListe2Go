@@ -12,7 +12,6 @@ import { MenuController } from '@ionic/angular';
 import { userAuthorizationService } from '../_services/userAuthorization.service';
 import { UserAuthorization } from '../_types/userAuthorization';
 import { StorageService } from '../_services/storage.service';
-import { async } from '@firebase/util';
 
 @Component({
   selector: 'app-shopping-lists',
@@ -22,7 +21,7 @@ import { async } from '@firebase/util';
 
 export class ShoppingListsPage implements OnInit {
   shoppingLists: Observable<ShoppingList[]>;
-  shoppingListsWithPermission: Observable<ShoppingList[]>;
+  shoppingListsWithPermission: ShoppingList[];
   shoppingListsRef: AngularFireList<ShoppingList>;
   userAuthorization: Observable<UserAuthorization[]>;
   userAuthorizationRef: AngularFireList<UserAuthorization>;
@@ -45,22 +44,13 @@ export class ShoppingListsPage implements OnInit {
       this.userAuthorizationRef = afDb.list('/UserAuthorization');
       this.userAuthService.setUserAuthorizationtReference(this.userAuthorizationRef);
   
-      this.shoppingListsWithPermission = this.shoppingLists.forEach(async (lists) => { 
-        let index = 0;
+      // ToDo:
+      this.shoppingLists.forEach(async (lists) => { 
         lists.forEach(async (list) => { 
-          let hasUserPerrmission = await this.userAuthService.hasUserPerrmission(list);
-            if(!hasUserPerrmission)
-            {
-              console.log(lists);
-              lists.splice(index, 1);
-              console.log(lists);
-            }
-
-            index++;
-        });
-     
+          let listWithPermission = await this.userAuthService.getListWithPermission(list);
+          this.shoppingListsWithPermission.push(listWithPermission); //ToDo: Wird vor Zeile 49 ausgeführ + push() funktioniert nicht
+      });    
     });    
-      
 }
 
   openShoppingList(list: ShoppingList)

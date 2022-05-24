@@ -6,6 +6,7 @@ import {
 
   } from '@angular/fire/compat/database';
 import { StorageService } from '../_services/storage.service'
+import { Observable } from 'rxjs';
 
 
 
@@ -26,21 +27,16 @@ export class userAuthorizationService {
         this.UserAuthReference = userAuthRef;
     }
 
-    async hasUserPerrmission(shoppingList: ShoppingList): Promise<boolean> {
+    async getListWithPermission(shoppingList: ShoppingList): Promise<ShoppingList> {
         let userAuthorization = this.UserAuthReference.valueChanges();
         let currentUser = await this.storageService.get('currentUserID');
  
         userAuthorization.forEach(async (userAuth) => { 
-            let a = userAuth.filter( x => x.listId == shoppingList.ID);
-            userAuth.forEach(async (auth) => { 
-               if(auth.userId == currentUser)
-               {
-                   return true;
-               }
-            });
+            let list = userAuth.find( x => x.listId == shoppingList.ID && x.userId == currentUser);
+            return list;
         });
 
-        return false;
+        return undefined;
     }
 
     async addUser(shoppingList: ShoppingList)
