@@ -19,7 +19,7 @@
         animated>
   </ion-searchbar>
 
-  <ion-list *ngFor="let list of shoppingListsWithPermission | async | filter:searchTerm">
+  <ion-list *ngFor="let list of shoppingLists | async | filter:searchTerm">
       <ion-item (click)="openShoppingList(list)">
         <ion-label>{{ list.Name }}</ion-label>
         <ion-icon (click)="addUser(list)" color="primary" name="person-add-outline"></ion-icon>

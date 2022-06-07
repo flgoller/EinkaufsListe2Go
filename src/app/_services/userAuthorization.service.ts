@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import { UserAuthorization } from '../_types/userAuthorization';
 import { ShoppingList } from '../_types/shoppingLists';
-import {
-    AngularFireList,
-
-  } from '@angular/fire/compat/database';
+import { AngularFireList } from '@angular/fire/compat/database';
 import { StorageService } from '../_services/storage.service'
-import { Observable } from 'rxjs';
-
-
 
 @Injectable({
     providedIn: 'root',
@@ -32,8 +26,11 @@ export class userAuthorizationService {
         let currentUser = await this.storageService.get('currentUserID');
  
         userAuthorization.forEach(async (userAuth) => { 
-            let list = userAuth.find( x => x.listId == shoppingList.ID && x.userId == currentUser);
-            return list;
+            let hasPermission = userAuth.find( x => x.listId == shoppingList.ID && x.userId == currentUser);
+            if(hasPermission)
+            {
+                return shoppingList;
+            }
         });
 
         return undefined;

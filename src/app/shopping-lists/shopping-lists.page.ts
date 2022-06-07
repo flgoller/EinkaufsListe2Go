@@ -44,13 +44,13 @@ export class ShoppingListsPage implements OnInit {
       this.userAuthorizationRef = afDb.list('/UserAuthorization');
       this.userAuthService.setUserAuthorizationtReference(this.userAuthorizationRef);
   
-      // ToDo:
+      /* ToDo:
       this.shoppingLists.forEach(async (lists) => { 
         lists.forEach(async (list) => { 
           let listWithPermission = await this.userAuthService.getListWithPermission(list);
           this.shoppingListsWithPermission.push(listWithPermission); //ToDo: Wird vor Zeile 49 ausgeführ + push() funktioniert nicht
       });    
-    });    
+    });    */
 }
 
   openShoppingList(list: ShoppingList)
@@ -68,10 +68,51 @@ export class ShoppingListsPage implements OnInit {
       this.menuCtrl.enable(true);
   }
 
-  addUser(shoppingList: ShoppingList)
+  async addUser(shoppingList: ShoppingList)
   {
     this.notOpenList = true;
-    this.shoppingListService.deleteShoppingList(shoppingList);
+
+    let alert = this.alertCtrl.create({
+      header: 'Benutzer hinzufügen',
+      inputs: [
+        {
+          name: 'Benutzername',
+          placeholder: 'Benutzername'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Abbruch',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Hinzufügen',
+          handler: data => {
+            if(data.Benutzername.length > 2)
+            {
+              /*
+              let newShoppingList = new ShoppingList(data.Name);
+              this.shoppingListService.saveShoppingList(newShoppingList);*/
+            }
+            else
+            {
+              this.toast
+                .create({
+                    message: `Der Benutzername muss mindestens 3 Zeichen lang sein.`,
+                    color: 'warning',
+                    duration: 5000,
+                })
+                .then((toast) => toast.present());
+            this.router.navigateByUrl('/login');
+            }
+        }
+      }
+      ]
+    });
+    (await alert).present();
   }
 
   deleteShoppingList(shoppingList: ShoppingList)
@@ -81,47 +122,74 @@ export class ShoppingListsPage implements OnInit {
   }
 
   async shoppingListprompt() {
-    let alert = this.alertCtrl.create({
-      header: 'Neue Einkaufsliste',
-      inputs: [
-        {
-          name: 'Name',
-          placeholder: 'Name'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
+    let count = 0;
+    for(let list in this.shoppingLists)
+    {
+      count++;
+    }
+    if(count > 10) // ToDo
+    {
+      let alert = this.alertCtrl.create({
+        header: 'Sie haben bereits 8 Listen erstellt',
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'okay',
+            handler: data => {
+              console.log('Okay clicked');
+            }
+          },
+
+        ]
+      });
+      (await alert).present();
+    }
+    else
+    {
+      let alert = this.alertCtrl.create({
+        header: 'Neue Einkaufsliste',
+        inputs: [
+          {
+            name: 'Name',
+            placeholder: 'Name'
           }
-        },
-        {
-          text: 'Speichern',
-          handler: data => {
-            if(data.Name.length > 2)
-            {
-              let newShoppingList = new ShoppingList(data.Name);
-              this.shoppingListService.saveShoppingList(newShoppingList);
+        ],
+        buttons: [
+          {
+            text: 'Abbruch',
+            role: 'cancel',
+            handler: data => {
+              console.log('Cancel clicked');
             }
-            else
-            {
-              this.toast
-                .create({
-                    message: `Der Name muss mindestens 3 Zeichen lang sein.`,
-                    color: 'warning',
-                    duration: 5000,
-                })
-                .then((toast) => toast.present());
-            this.router.navigateByUrl('/login');
-            }
-           
+          },
+          {
+            text: 'Speichern',
+            handler: data => {
+              if(data.Name.length > 2)
+              {
+                let newShoppingList = new ShoppingList(data.Name);
+                this.shoppingListService.saveShoppingList(newShoppingList);
+              }
+              else
+              {
+                this.toast
+                  .create({
+                      message: `Der Name muss mindestens 3 Zeichen lang sein.`,
+                      color: 'warning',
+                      duration: 5000,
+                  })
+                  .then((toast) => toast.present());
+              this.router.navigateByUrl('/login');
+              }
+             
+          }
         }
-      }
-      ]
-    });
-    (await alert).present();
+        ]
+      });
+      (await alert).present();
+    }
+   
+   
   }
 
   ngOnInit() {}

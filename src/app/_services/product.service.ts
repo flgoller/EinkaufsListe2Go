@@ -40,8 +40,18 @@ export class ProductService {
 
     async saveProduct(product: Product)
     {
+        let productName = product.Name;
+        let productAmount = product.Amount;
+        let productCategory = product.Category;
+        let productPriority = product.Priority;
+        let productNotes = product.Notes;
         product.CreatedBy = await this.storageService.get('currentUserID');
         product.CreatedOn = new Date().toISOString();
+        product.Name = productName;
+        product.Amount = productAmount;
+        product.Category = productCategory;
+        product.Priority = productPriority;
+        product.Notes = productNotes;
         let key = this.productReference.push(product);
         product.ID = key.key;
         this.productReference.update(key, product);
