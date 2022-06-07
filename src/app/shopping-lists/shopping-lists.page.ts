@@ -26,6 +26,7 @@ export class ShoppingListsPage implements OnInit {
   userAuthorization: Observable<UserAuthorization[]>;
   userAuthorizationRef: AngularFireList<UserAuthorization>;
   searchTerm: string;
+  countList: number;
   notOpenList: boolean;
   constructor(
       private router: Router,
@@ -43,14 +44,16 @@ export class ShoppingListsPage implements OnInit {
 
       this.userAuthorizationRef = afDb.list('/UserAuthorization');
       this.userAuthService.setUserAuthorizationtReference(this.userAuthorizationRef);
-  
-      /* ToDo:
+
+      // ToDo:
       this.shoppingLists.forEach(async (lists) => { 
+        this.countList = 0;
         lists.forEach(async (list) => { 
-          let listWithPermission = await this.userAuthService.getListWithPermission(list);
-          this.shoppingListsWithPermission.push(listWithPermission); //ToDo: Wird vor Zeile 49 ausgeführ + push() funktioniert nicht
+          this.countList += 1;
+          //let listWithPermission = await this.userAuthService.getListWithPermission(list);
+          //this.shoppingListsWithPermission.push(listWithPermission); //ToDo: Wird vor Zeile 49 ausgeführ + push() funktioniert nicht
       });    
-    });    */
+    });    
 }
 
   openShoppingList(list: ShoppingList)
@@ -119,23 +122,21 @@ export class ShoppingListsPage implements OnInit {
   {
     this.notOpenList = true;
     this.shoppingListService.deleteShoppingList(shoppingList);
+    this.countList -= 1;
   }
 
+
+
   async shoppingListprompt() {
-    let count = 0;
-    for(let list in this.shoppingLists)
-    {
-      count++;
-    }
-    if(count > 10) // ToDo
+    if(this.countList >= 10) // ToDo
     {
       let alert = this.alertCtrl.create({
-        header: 'Sie haben bereits 8 Listen erstellt',
+        header: 'Sie haben bereits 10 Listen erstellt',
         buttons: [
           {
             text: 'Ok',
             role: 'okay',
-            handler: data => {
+            handler: () => {
               console.log('Okay clicked');
             }
           },
