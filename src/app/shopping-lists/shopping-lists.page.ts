@@ -128,10 +128,10 @@ export class ShoppingListsPage implements OnInit {
 
 
   async shoppingListprompt() {
-    if(this.countList >= 10) // ToDo
+    if(this.countList >= 10)
     {
       let alert = this.alertCtrl.create({
-        header: 'Sie haben bereits 10 Listen erstellt',
+        header: 'Sie können maximal 10 Listen erstellen',
         buttons: [
           {
             text: 'Ok',
