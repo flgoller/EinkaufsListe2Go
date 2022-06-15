@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LogoutComponent } from './logout/logout.page';
+import { LogoutComponent } from './LogOut/logout.page';
 import { WillkommenGuard } from './_guards/welcome.guard';
 import {
   AngularFireAuthGuard,
@@ -20,63 +20,57 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => 
-    import('./login/login.module').then(m => m.LoginPageModule),
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginPageModule),
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectLoggedInToRoot },
   },
   {
     path: 'welcome',
     loadChildren: () =>
-      import('./welcome/welcome.module').then(
-        m => m.WelcomePageModule
-      ),
+      import('./welcome/welcome.module').then((m) => m.WelcomePageModule),
     canLoad: [WillkommenGuard],
   },
   {
     path: 'register',
-    loadChildren: () => 
-    import('./register/register.module').then(
-      m => m.RegisterPageModule
-      ),
-      canActivate: [AngularFireAuthGuard],
-      data: { authGuardPipe: redirectLoggedInToRoot },
+    loadChildren: () =>
+      import('./register/register.module').then((m) => m.RegisterPageModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectLoggedInToRoot },
   },
   {
     path: 'forgot-password',
-    loadChildren: () => 
-    import('./forgot-password/forgot-password.module').then(
-      m => m.ForgotPasswordPageModule
+    loadChildren: () =>
+      import('./forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordPageModule
       ),
-      canActivate: [AngularFireAuthGuard],
-      data: { authGuardPipe: redirectLoggedInToRoot },
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectLoggedInToRoot },
   },
   {
     path: 'shopping-lists',
-    loadChildren: () => 
-    import('./shopping-lists/shopping-lists.module').then(
-      m => m.ShoppingListsPageModule
+    loadChildren: () =>
+      import('./shopping-lists/shopping-lists.module').then(
+        (m) => m.ShoppingListsPageModule
       ),
-      canActivate: [AngularFireAuthGuard],
-      data: { authGuardPipe: redirectUnauthorizedToLogin },
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
   },
   {
     path: 'product',
-    loadChildren: () => 
-    import('./product/product.module').then(
-      m => m.ProductPageModule
-      ),
-      canActivate: [AngularFireAuthGuard],
-      data: { authGuardPipe: redirectUnauthorizedToLogin },
+    loadChildren: () =>
+      import('./product/product.module').then((m) => m.ProductPageModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
   },
   {
     path: 'shopping-list',
-    loadChildren: () => 
-    import('./shopping-list/shopping-list.module').then(
-      m => m.ShoppingListPageModule
+    loadChildren: () =>
+      import('./shopping-list/shopping-list.module').then(
+        (m) => m.ShoppingListPageModule
       ),
-      canActivate: [AngularFireAuthGuard],
-      data: { authGuardPipe: redirectUnauthorizedToLogin },
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
   },
   {
     path: 'logout',
@@ -86,6 +80,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
